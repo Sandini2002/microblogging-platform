@@ -48,5 +48,3 @@ A simple microblogging platform where users can register, create posts, and comm
 - Register a new account or log in using the `/register` and `/login` endpoints.
 - Create posts and comment on others' posts from the homepage.
 
-
-   
