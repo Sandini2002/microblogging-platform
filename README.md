@@ -48,8 +48,11 @@ A simple microblogging platform where users can register, create posts, and comm
 💻 Usage
 
 🔐 Register a new account at /register
+
 🔑 Log in at /login
+
 🏠 Create posts and comment on others’ posts from the homepage
+
 🛠️ Access the admin panel at /admin (requires a superuser account)
 
 Author
