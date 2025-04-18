@@ -43,8 +43,16 @@ A simple microblogging platform where users can register, create posts, and comm
    ```bash
    python manage.py runserver
    ```
-## Usage
+   Then open your browser and go to:http://127.0.0.1:8000/
 
-- Register a new account or log in using the `/register` and `/login` endpoints.
-- Create posts and comment on others' posts from the homepage.
+💻 Usage
 
+🔐 Register a new account at /register
+🔑 Log in at /login
+🏠 Create posts and comment on others’ posts from the homepage
+🛠️ Access the admin panel at /admin (requires a superuser account)
+
+Author
+Rashmi Hennnayaka
+Sandini fernando
+Sihara Hasandi
