@@ -57,5 +57,7 @@ A simple microblogging platform where users can register, create posts, and comm
 
 Author
 Rashmi Hennnayaka
+
 Sandini fernando
+
 Sihara Hasandi
