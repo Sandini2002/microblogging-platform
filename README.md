@@ -55,7 +55,8 @@ A simple microblogging platform where users can register, create posts, and comm
 
 🛠️ Access the admin panel at /admin (requires a superuser account)
 
-Author
+🙋‍♀️ Author
+
 Rashmi Hennnayaka
 
 Sandini fernando
