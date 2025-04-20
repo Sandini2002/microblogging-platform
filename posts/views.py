@@ -8,3 +8,5 @@ def posts(request):
 def create_post(request):
     # Example logic for the postspage
     return render(request, 'posts.html', {'message': 'Welcome to the create post page!'})
+    
+posts = Post.objects.all()

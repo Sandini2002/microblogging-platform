@@ -1,22 +1,46 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Home</title>
-</head>
-<body>
-    {% extends 'base.html' %}
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}All Posts{% endblock %}
+
 {% block content %}
-<h2>All Posts</h2>
-<a href="{% url 'create-post' %}" class="btn btn-primary mb-3">New Post</a>
-{% for post in posts %}
-  <div class="card mb-2">
+<div class="container mt-4">
+  <h2 class="mb-4">Recent Posts</h2>
+  <a href="{% url 'create-post' %}" class="btn btn-primary mb-3">+ New Post</a>
+
+  {% for post in posts %}
+  <div class="card mb-3">
     <div class="card-body">
-      <strong>{{ post.author.username }}</strong> - {{ post.created_at }}
-      <p>{{ post.content }}</p>
+      <h5 class="card-title">{{ post.author.username }}</h5>
+      <h6 class="card-subtitle mb-2 text-muted">{{ post.created_at }}</h6>
+      <p class="card-text">{{ post.content }}</p>
+
+      <!-- Like button -->
+      <a href="{% url 'like-post' post.id %}" class="btn btn-sm {% if user in post.likes.all %}btn-danger{% else %}btn-outline-danger{% endif %}">
+        ❤️ {{ post.likes.count }}
+      </a>
+
+      <!-- Comments -->
+      <hr>
+      <h6>Comments:</h6>
+      {% for comment in post.comments.all %}
+      <p><strong>{{ comment.author.username }}:</strong> {{ comment.text }}</p>
+      {% empty %}
+      <p>No comments yet.</p>
+      {% endfor %}
+
+      <!-- Add Comment Form -->
+      <form action="{% url 'add-comment' post.id %}" method="post" class="mt-2">
+        {% csrf_token %}
+        <div class="input-group">
+          <input type="text" name="text" class="form-control" placeholder="Write a comment...">
+          <button type="submit" class="btn btn-outline-secondary">Comment</button>
+        </div>
+      </form>
     </div>
   </div>
-{% endfor %}
+  {% empty %}
+  <p>No posts yet. Be the first to create one!</p>
+  {% endfor %}
+</div>
 {% endblock %}
-
-</body>
-</html>
