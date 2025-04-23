@@ -1,9 +1,36 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Home</title>
-</head>
-<body>
-    <h1>{{ message }}</h1>
-</body>
-</html>
+{% extends 'base2.html' %}
+
+{% block title %}All Posts{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <!-- Header Section -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="mb-0">All Posts</h2>
+            <a href="{% url 'create_post' %}" class="btn btn-primary">New Post</a>
+        </div>
+
+        <!-- Post List -->
+        {% for post in posts %}
+            <div class="card mb-3 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>{{ post.author.username }}</strong>
+                            <small class="text-muted ms-2">{{ post.created_at|date:"Y-m-d H:i" }}</small>
+                        </div>
+                    </div>
+                    <p class="mt-2">{{ post.content }}</p>
+                </div>
+            </div>
+        {% empty %}
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+                    <p>No posts available.</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
