@@ -50,7 +50,7 @@
                         <!-- Start Navbar -->
                         <nav class="navbar navbar-expand-lg">
                             <a class="navbar-brand" href="index.html">
-                                <img src="{% static 'images/logo/white-logo.svg' %}" alt="Logo">
+                                <img src="{% static 'images/logo/logo.png' %}" alt="Logo">
                             </a>
                             <button class="navbar-toggler mobile-menu-btn" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -378,7 +378,14 @@
             append: " ",
         });
         cu.start();
+
+
+        
+    const LOGO_DEFAULT = "{% static 'images/logo/logo.png' %}";
+    const LOGO_WHITE = "{% static 'images/logo/white-logo.svg' %}";
+
     </script>
+
 </body>
 
 </html>
