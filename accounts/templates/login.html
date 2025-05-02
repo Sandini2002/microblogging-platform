@@ -1,109 +1,4 @@
-{% load static %}
 
-<!--
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
-  <link rel="stylesheet" href="{% static 'css/main.css' %}" />
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-</head>
-<body>
-
-<section class="vh-100">
-  <div class="container py-5 h-100">
-    <div class="row d-flex align-items-center justify-content-center h-100">
-      <div class="col-md-8 col-lg-7 col-xl-6">
-        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
-             class="img-fluid" alt="Phone image">
-      </div>
-      <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
-        <form id="loginForm" method="POST">
-          {% csrf_token %}
-          <div class="form-outline mb-4">
-            <input type="email" name="email" class="form-control form-control-lg" required />
-            <label class="form-label">Email address</label>
-          </div>
-        
-          <div class="form-outline mb-4">
-            <input type="password" name="password" class="form-control form-control-lg" required />
-            <label class="form-label">Password</label>
-          </div>
-        
-          <button type="submit" class="btn btn-primary btn-lg btn-block">Sign in</button>
-        </form>
-        
-        
-        
-      </div>
-    </div>
-  </div>
-</section>
-
-<script>
-  function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-      const cookies = document.cookie.split(';');
-      for (let cookie of cookies) {
-        cookie = cookie.trim();
-        if (cookie.substring(0, name.length + 1) === (name + '=')) {
-          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-          break;
-        }
-      }
-    }
-    return cookieValue;
-  }
-
-  const csrfToken = getCookie('csrftoken');
-
-  document.getElementById('loginForm').addEventListener('submit', async function (e) {
-    e.preventDefault();
-
-    const form = e.target;
-    const formData = new FormData(form);
-
-    const response = await fetch("{% url 'login' %}", {
-      method: 'POST',
-      headers: {
-        'X-CSRFToken': csrfToken,
-        'X-Requested-With': 'XMLHttpRequest'
-      },
-      body: formData
-    });
-
-    const text = await response.text();  // Always read as text first
-    try {
-      const data = JSON.parse(text);
-      if (data.success) {
-        window.location.href = data.redirect_url;
-      } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Login Failed',
-          text: data.message,
-        });
-      }
-    } catch (err) {
-      console.error('JSON parse error:', err);
-      console.error('Raw response:', text); // See what was returned
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops!',
-        text: 'Something went wrong on the server.',
-      });
-    }
-  });
-</script>
-
-
-
-
-
-</body>
-</html>
--->
 
 {% load static %}
 <!DOCTYPE html>
@@ -161,7 +56,7 @@
 
                                 </div>
                                 <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
-                                    <img src="{% static 'images/hero/login.png' %}" alt="Logo" class="img-fluid">
+                                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg" alt="Logo" class="img-fluid">
                                 </div>
                             </div>
                         </div>
