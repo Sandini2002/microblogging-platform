@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     # Your custom apps
     'accounts',
     'posts',
-    'comments',
     'django_bootstrap5',
 ]
 
