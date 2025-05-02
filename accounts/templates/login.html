@@ -1,103 +1,136 @@
+
+
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html class="no-js" lang="zxx">
 <head>
-  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
-  <link rel="stylesheet" href="{% static 'css/main.css' %}" />
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login - SnapThought</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/LineIcons.2.0.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/animate.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/main.css' %}" />
 </head>
 <body>
-
-<section class="vh-100">
-  <div class="container py-5 h-100">
-    <div class="row d-flex align-items-center justify-content-center h-100">
-      <div class="col-md-8 col-lg-7 col-xl-6">
-        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
-             class="img-fluid" alt="Phone image">
-      </div>
-      <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
-        <form id="loginForm" method="POST">
-          {% csrf_token %}
-          <div class="form-outline mb-4">
-            <input type="email" name="email" class="form-control form-control-lg" required />
-            <label class="form-label">Email address</label>
-          </div>
-        
-          <div class="form-outline mb-4">
-            <input type="password" name="password" class="form-control form-control-lg" required />
-            <label class="form-label">Password</label>
-          </div>
-        
-          <button type="submit" class="btn btn-primary btn-lg btn-block">Sign in</button>
-        </form>
-        
-        
-        
-      </div>
+    <!-- Bootstrap alert for displaying messages -->
+    <div id="alert-container" class="container mt-3">
+        <!-- Alert will be dynamically added here -->
     </div>
-  </div>
-</section>
 
-<script>
-  function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-      const cookies = document.cookie.split(';');
-      for (let cookie of cookies) {
-        cookie = cookie.trim();
-        if (cookie.substring(0, name.length + 1) === (name + '=')) {
-          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-          break;
+    <section class="vh-100" style="background-color: #eee;">
+        <div class="container h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-lg-12 col-xl-11">
+                    <div class="card text-black" style="border-radius: 25px;">
+                        <div class="card-body p-md-5">
+                            <div class="row justify-content-center">
+                                <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+
+                                    <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Login</p>
+
+                                    <form class="mx-1 mx-md-4" method="POST" action="{% url 'login' %}" id="login-form">
+                                        {% csrf_token %}
+
+                                        <div class="d-flex flex-row align-items-center mb-4">
+                                            <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                                            <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                                                <input type="text" id="username" name="username" class="form-control" required />
+                                                <label class="form-label" for="username">Username</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex flex-row align-items-center mb-4">
+                                            <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
+                                            <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                                                <input type="password" id="password" name="password" class="form-control" required />
+                                                <label class="form-label" for="password">Password</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                                            <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg">Login</button>
+                                        </div>
+
+                                    </form>
+
+                                </div>
+                                <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
+                                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg" alt="Logo" class="img-fluid">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+    const getCookie = (name) => {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let cookie of cookies) {
+                cookie = cookie.trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
         }
-      }
-    }
-    return cookieValue;
-  }
+        return cookieValue;
+    };
 
-  const csrfToken = getCookie('csrftoken');
+    const csrfToken = getCookie('csrftoken');
 
-  document.getElementById('loginForm').addEventListener('submit', async function (e) {
-    e.preventDefault();
+    document.getElementById('login-form').addEventListener('submit', async function(event) {
+        event.preventDefault();
 
-    const form = e.target;
-    const formData = new FormData(form);
+        const form = event.target;
+        const formData = new FormData(form);
 
-    const response = await fetch("{% url 'login' %}", {
-      method: 'POST',
-      headers: {
-        'X-CSRFToken': csrfToken,
-        'X-Requested-With': 'XMLHttpRequest'
-      },
-      body: formData
+        try {
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': csrfToken
+                },
+            });
+
+            let result;
+            try {
+                result = await response.json();
+            } catch (jsonError) {
+                throw new Error('Invalid JSON');
+            }
+
+            const alertContainer = document.getElementById('alert-container');
+            alertContainer.innerHTML = `
+                <div class="alert alert-${result.success ? 'success' : 'danger'} alert-dismissible fade show" role="alert">
+                    ${result.message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            `;
+
+            if (result.success) {
+                setTimeout(() => {
+                    window.location.href = result.redirect_url;
+                }, 2000);
+            }
+
+        } catch (error) {
+            console.error('Error:', error);
+            document.getElementById('alert-container').innerHTML = `
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    An unexpected error occurred. Please try again.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            `;
+        }
     });
-
-    const text = await response.text();  // Always read as text first
-    try {
-      const data = JSON.parse(text);
-      if (data.success) {
-        window.location.href = data.redirect_url;
-      } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Login Failed',
-          text: data.message,
-        });
-      }
-    } catch (err) {
-      console.error('JSON parse error:', err);
-      console.error('Raw response:', text); // See what was returned
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops!',
-        text: 'Something went wrong on the server.',
-      });
-    }
-  });
-</script>
-
-
-
-
-
+    </script>
 </body>
 </html>
