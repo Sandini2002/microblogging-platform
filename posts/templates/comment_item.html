@@ -1,0 +1,51 @@
+<li class="list-group-item d-flex flex-column">
+    <!-- Comment Header -->
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <strong>{{ comment.author.username }}</strong>: {{ comment.content }}
+            <small class="text-muted ms-2">{{ comment.created_at|date:"Y-m-d H:i" }}</small>
+        </div>
+        <div>
+            <!-- Like Button -->
+            <a href="{% url 'like_comment' comment.id %}" class="text-danger me-3 text-decoration-none" aria-label="Like Comment">
+                <i class="fas fa-heart"></i> {{ comment.likes.count }}
+            </a>
+            <!-- Edit Button -->
+            {% if request.user == comment.author %}
+            <a href="{% url 'edit_comment' comment.id %}" class="text-warning me-2 text-decoration-none" aria-label="Edit Comment">
+                <i class="fas fa-pencil-alt"></i>
+            </a>
+            <!-- Delete Button -->
+            <form action="{% url 'delete_comment' comment.id %}" method="POST" class="d-inline">
+                {% csrf_token %}
+                <button type="submit" class="border-0 bg-transparent text-danger me-2" onclick="return confirm('Are you sure you want to delete this comment?')" aria-label="Delete Comment">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </form>
+            
+            {% endif %}
+            <!-- Reply Button -->
+            <a href="#reply-form-{{ comment.id }}" class="text-primary text-decoration-none" data-bs-toggle="collapse" aria-expanded="false" aria-controls="reply-form-{{ comment.id }}">
+                <i class="fas fa-reply"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Reply Form -->
+    <div id="reply-form-{{ comment.id }}" class="collapse mt-2">
+        <form action="{% url 'add_reply' comment_id=comment.id %}" method="POST">
+            {% csrf_token %}
+            <textarea name="comment_content" rows="2" class="form-control" placeholder="Reply to this comment..."></textarea>
+            <button type="submit" class="btn btn-sm btn-primary mt-2">Reply</button>
+        </form>
+    </div>
+
+    <!-- Nested Replies -->
+    {% if comment.replies.all %}
+        <ul class="list-group mt-2 ms-4">
+            {% for reply in comment.replies.all %}
+                {% include 'comment_item.html' with comment=reply %}
+            {% endfor %}
+        </ul>
+    {% endif %}
+</li>
