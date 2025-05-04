@@ -16,6 +16,28 @@
   color: hsl(var(--muted-foreground));
 }
 
+/* Navbar Styles */
+.navbar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem;
+  background-color: hsl(var(--card));
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar a {
+  font-size: 1rem;
+  font-weight: bold;
+  color: hsl(var(--card-foreground));
+  text-decoration: none;
+  margin-left: 1rem;
+  transition: color 0.3s ease;
+}
+
+.navbar a:hover {
+  color: hsl(var(--muted-foreground));
+}
+
 /* User Profile Styles */
 .user-profile {
   display: flex;
