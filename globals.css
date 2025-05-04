@@ -1,0 +1,19 @@
+/* ...existing code... */
+
+:root {
+  --muted: 220, 14%, 96%;
+  --muted-foreground: 220, 10%, 40%;
+  --card: 0, 0%, 100%;
+  --card-foreground: 220, 10%, 20%;
+}
+
+/* Utility classes */
+.bg-card {
+  background-color: hsl(var(--card));
+}
+
+.text-muted-foreground {
+  color: hsl(var(--muted-foreground));
+}
+
+/* ...existing code... */
