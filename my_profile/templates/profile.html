@@ -1,0 +1,161 @@
+{% extends 'base2.html' %}
+
+{% block title %}{{ profile_user.username }}'s Profile{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <!-- Profile picture placeholder -->
+                        <div style="width: 100px; height: 100px; background-color: #ff69b4; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; margin: 0 auto;">
+                            {{ profile_user.username|first|upper }}
+                        </div>
+                    </div>
+                    <h4 class="card-title">{{ profile_user.username }}</h4>
+                    <p class="text-muted">Joined: {{ profile_user.date_joined|date:"F Y" }}</p>
+                </div>
+            </div>
+            
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h5 class="card-title">Stats</h5>
+                    <div class="row text-center">
+                        <div class="col-4">
+                            <h6>{{ user_posts.count }}</h6>
+                            <small class="text-muted">Posts</small>
+                        </div>
+                        <div class="col-4">
+                            <h6>{{ user_comments.count }}</h6>
+                            <small class="text-muted">Comments</small>
+                        </div>
+                        <div class="col-4">
+                            <h6>{{ liked_posts.count }}</h6>
+                            <small class="text-muted">Likes</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-8">
+            <ul class="nav nav-tabs" id="profileTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="posts-tab" data-bs-toggle="tab" data-bs-target="#posts" type="button" role="tab" aria-controls="posts" aria-selected="true">Posts</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="comments-tab" data-bs-toggle="tab" data-bs-target="#comments" type="button" role="tab" aria-controls="comments" aria-selected="false">Comments</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="likes-tab" data-bs-toggle="tab" data-bs-target="#likes" type="button" role="tab" aria-controls="likes" aria-selected="false">Likes</button>
+                </li>
+            </ul>
+            
+            <div class="tab-content" id="profileTabsContent">
+                <!-- Posts Tab -->
+                <div class="tab-pane fade show active" id="posts" role="tabpanel" aria-labelledby="posts-tab">
+                    {% if user_posts %}
+                        {% for post in user_posts %}
+                            <div class="card mt-3">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <div class="d-flex align-items-center">
+                                            <div style="width: 40px; height: 40px; background-color: #ff69b4; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 10px;">
+                                                {{ post.author.username|first|upper }}
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-0">{{ post.author.username }}</h6>
+                                                <small class="text-muted">{{ post.created_at|date:"M d, Y" }}</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="card-text">{{ post.content }}</p>
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <span class="me-3"><i class="fas fa-heart"></i> {{ post.likes.count }}</span>
+                                            <span><i class="fas fa-comment"></i> {{ post.comments.count }}</span>
+                                        </div>
+                                        {% if user == post.author %}
+                                            <div>
+                                                <a href="{% url 'update_post' post.id %}" class="btn btn-sm btn-outline-primary">Edit</a>
+                                                <form method="post" action="{% url 'delete_post' post.id %}" class="d-inline">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure you want to delete this post?')">Delete</button>
+                                                </form>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="alert alert-info mt-3">No posts yet.</div>
+                    {% endif %}
+                </div>
+                
+                <!-- Comments Tab -->
+                <div class="tab-pane fade" id="comments" role="tabpanel" aria-labelledby="comments-tab">
+                    {% if user_comments %}
+                        {% for comment in user_comments %}
+                            <div class="card mt-3">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <div>
+                                            <small class="text-muted">Commented on a post by {{ comment.post.author.username }}</small>
+                                        </div>
+                                        <small class="text-muted">{{ comment.created_at|date:"M d, Y" }}</small>
+                                    </div>
+                                    <p class="card-text">{{ comment.content }}</p>
+                                    {% if user == comment.author %}
+                                        <div class="text-end">
+                                            <a href="{% url 'edit_comment' comment.id %}" class="btn btn-sm btn-outline-primary">Edit</a>
+                                            <form method="post" action="{% url 'delete_comment' comment.id %}" class="d-inline">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure you want to delete this comment?')">Delete</button>
+                                            </form>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="alert alert-info mt-3">No comments yet.</div>
+                    {% endif %}
+                </div>
+                
+                <!-- Likes Tab -->
+                <div class="tab-pane fade" id="likes" role="tabpanel" aria-labelledby="likes-tab">
+                    {% if liked_posts %}
+                        {% for post in liked_posts %}
+                            <div class="card mt-3">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <div class="d-flex align-items-center">
+                                            <div style="width: 40px; height: 40px; background-color: #ff69b4; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 10px;">
+                                                {{ post.author.username|first|upper }}
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-0">{{ post.author.username }}</h6>
+                                                <small class="text-muted">{{ post.created_at|date:"M d, Y" }}</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="card-text">{{ post.content }}</p>
+                                    <div>
+                                        <span class="me-3"><i class="fas fa-heart text-danger"></i> {{ post.likes.count }}</span>
+                                        <span><i class="fas fa-comment"></i> {{ post.comments.count }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="alert alert-info mt-3">No liked posts yet.</div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
