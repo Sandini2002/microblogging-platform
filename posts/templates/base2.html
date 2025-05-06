@@ -1,192 +1,311 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html class="no-js" lang="zxx">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <title>{% block title %}Snap Thoughts{% endblock %}</title>
-    <!-- CSS -->
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="shortcut icon"
+      type="image/x-icon"
+      href="{% static 'images/favicon.svg' %}"
+    />
+
+    <!-- ========================= CSS here ========================= -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/LineIcons.2.0.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/animate.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/tiny-slider.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/glightbox.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+    <!-- Pink Theme CSS -->
     <style>
-        :root {
-            --pink-primary: #ff69b4;
-            --pink-secondary: #ffb6c1;
-            --pink-light: #ffd1dc;
-            --pink-dark: #ff1493;
-            --pink-bg: #fff5f8;
-        }
-        
-        /* Sticky Footer Styling */
-        html, body {
-            height: 100%;
-            margin: 0;
-            background-color: var(--pink-bg);
-        }
-
-        .wrapper {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        main {
-            flex: 1;
-        }
-
-        footer {
-            flex-shrink: 0;
-        }
-        
-        /* Navbar styling */
-        .navbar {
-            background-color: white !important;
-            box-shadow: 0 2px 10px rgba(255, 105, 180, 0.1);
-        }
-        
-        .navbar-brand {
-            color: var(--pink-dark) !important;
-            font-weight: bold;
-        }
-        
-        .nav-link {
-            color: #333 !important;
-        }
-        
-        .nav-link:hover, .nav-link.active {
-            color: var(--pink-dark) !important;
-        }
-        
-        .btn-pink {
-            background-color: var(--pink-primary);
-            color: white;
-            border: none;
-        }
-        
-        .btn-pink:hover {
-            background-color: var(--pink-dark);
-            color: white;
-        }
-        
-        /* Profile dropdown */
-        .profile-dropdown {
-            position: relative;
-        }
-        
-        .profile-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: var(--pink-primary);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-        
-        .dropdown-menu {
-            border-color: var(--pink-light);
-            box-shadow: 0 2px 10px rgba(255, 105, 180, 0.1);
-        }
-        
-        .dropdown-item:hover {
-            background-color: var(--pink-light);
-            color: var(--pink-dark);
-        }
-        
-        /* Footer styling */
-        footer {
-            background-color: white;
-            border-top: 1px solid var(--pink-light);
-            color: #666;
-        }
+      :root {
+        --pink-primary: #ff69b4;
+        --pink-secondary: #ffb6c1;
+        --pink-light: #ffd1dc;
+        --pink-dark: #ff1493;
+        --pink-bg: #fff5f8;
+      }
+      
+      .btn-pink {
+        background-color: var(--pink-primary);
+        color: white;
+        border: none;
+      }
+      
+      .btn-pink:hover {
+        background-color: var(--pink-dark);
+        color: white;
+      }
+      
+      .btn-outline-pink {
+        color: var(--pink-primary);
+        border-color: var(--pink-primary);
+      }
+      
+      .btn-outline-pink:hover {
+        background-color: var(--pink-primary);
+        color: white;
+      }
+      
+      .text-pink {
+        color: var(--pink-primary);
+      }
+      
+      .profile-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: var(--pink-primary);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+      }
+      
+      .dropdown-menu {
+        border-color: var(--pink-light);
+        box-shadow: 0 2px 10px rgba(255, 105, 180, 0.1);
+      }
+      
+      .dropdown-item:hover {
+        background-color: var(--pink-light);
+        color: var(--pink-dark);
+      }
     </style>
-    {% block extra_styles %}{% endblock %}
-</head>
-<body>
-    <!-- Wrapper for Sticky Footer -->
-    <div class="wrapper">
-        <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-            <div class="container">
-                <!-- Brand Name -->
-                <a class="navbar-brand" href="{% url 'posts' %}">
-                    <img src="{% static 'images/logo.png' %}" alt="logo" width="30" height="30" class="d-inline-block align-text-top">
-                    Snap Thoughts
-                </a>
+    {% block extra_css %}{% endblock %}
+  </head>
 
-                <!-- Toggle Button for Mobile View -->
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <!-- Navbar Links -->
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav me-auto">
-                        <li class="nav-item">
-                            <a class="nav-link {% if request.path == '/posts/' %}active{% endif %}" href="{% url 'posts' %}">
-                                <i class="fas fa-home"></i> Feed
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {% if '/create/' in request.path %}active{% endif %}" href="{% url 'create_post' %}">
-                                <i class="fas fa-plus-circle"></i> New Post
-                            </a>
-                        </li>
-                    </ul>
-                    
-                    <!-- Search Form -->
-                    <form class="d-flex mx-auto">
-                        <input class="form-control me-2" type="search" placeholder="Search..." aria-label="Search">
-                        <button class="btn btn-pink" type="submit">Search</button>
-                    </form>
-                    
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item dropdown profile-dropdown">
-                            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <div class="profile-avatar me-2">
-                                    {{ request.user.username|first|upper }}
-                                </div>
-                                <span class="d-none d-md-inline">{{ request.user.username }}</span>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="{% url 'my_profile' %}"><i class="fas fa-user me-2"></i>Profile</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-
-        <!-- Main Content -->
-        <main class="container mt-4">
-            {% block content %}
-            {% endblock %}
-        </main>
-
-        <!-- Footer -->
-        <footer class="bg-light text-center py-3">
-            <div class="container">
-                <p>&copy; 2025 Snap Thoughts. All rights reserved.</p>
-            </div>
-        </footer>
+  <body>
+    <!-- Preloader -->
+    <div class="preloader">
+      <div class="preloader-inner">
+        <div class="preloader-icon">
+          <span></span>
+          <span></span>
+        </div>
+      </div>
     </div>
+    <!-- /End Preloader -->
 
-    <!-- JS -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Start Header Area -->
+    <header class="header navbar-area">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-12">
+            <div class="nav-inner">
+              <!-- Start Navbar -->
+              <nav class="navbar navbar-expand-lg">
+                <a class="navbar-brand" href="{% url 'home' %}">
+                  <img src="{% static 'images/logo/logo.png' %}" alt="Logo" />
+                </a>
+                <button
+                  class="navbar-toggler mobile-menu-btn"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#navbarSupportedContent"
+                  aria-controls="navbarSupportedContent"
+                  aria-expanded="false"
+                  aria-label="Toggle navigation"
+                >
+                  <span class="toggler-icon"></span>
+                  <span class="toggler-icon"></span>
+                  <span class="toggler-icon"></span>
+                </button>
+                <div
+                  class="collapse navbar-collapse sub-menu-bar"
+                  id="navbarSupportedContent"
+                >
+                  <ul id="nav" class="navbar-nav ms-auto">
+                    <!-- Feed Link -->
+                    <li class="nav-item">
+                      <a href="{% url 'posts' %}" class="{% if 'posts' in request.path and not 'create' in request.path %}active{% endif %}" aria-label="Toggle navigation">
+                        <i class="lni lni-home"></i> Feed
+                      </a>
+                    </li>
+                    
+                    <!-- Create Post Link -->
+                    <li class="nav-item">
+                      <a href="{% url 'create_post' %}" class="{% if 'create_post' in request.path %}active{% endif %}" aria-label="Toggle navigation">
+                        <i class="lni lni-pencil"></i> New Post
+                      </a>
+                    </li>
+                    
+                    <!-- Explore Link -->
+                    <li class="nav-item">
+                      <a href="{% url 'posts' %}" aria-label="Toggle navigation">
+                        <i class="lni lni-compass"></i> Explore
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                
+                <!-- User Profile Dropdown -->
+                <div class="user-menu dropdown">
+                  <a class="dropdown-toggle" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <div class="profile-avatar">
+                      {{ request.user.username|first|upper }}
+                    </div>
+                  </a>
+                  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                    <li><a class="dropdown-item" href="{% url 'profile' request.user.username %}">
+                      <i class="lni lni-user"></i> Profile
+                    </a></li>
+                    <li><a class="dropdown-item" href="{% url 'my_profile' %}">
+                      <i class="lni lni-cog"></i> Settings
+                    </a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="{% url 'logout' %}">
+                      <i class="lni lni-exit"></i> Logout
+                    </a></li>
+                  </ul>
+                </div>
+              </nav>
+              <!-- End Navbar -->
+            </div>
+          </div>
+        </div>
+        <!-- row -->
+      </div>
+      <!-- container -->
+    </header>
+    <!-- End Header Area -->
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <div class="container">
+        {% if messages %}
+          <div class="messages">
+            {% for message in messages %}
+              <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+        
+        {% block content %}{% endblock %}
+      </div>
+    </main>
+    <!-- End Main Content Area -->
+
+    <!-- Start Footer Area -->
+    <footer class="footer">
+      <!-- Start Footer Top -->
+      <div class="footer-top">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-4 col-md-4 col-12">
+              <!-- Single Widget -->
+              <div class="single-footer f-about">
+                <div class="logo">
+                  <a href="{% url 'home' %}">
+                    <img src="{% static 'images/logo/logo.png' %}" alt="Snap Thoughts Logo" />
+                  </a>
+                </div>
+                <p>
+                  Snap Thoughts is your space to explore, express, and share ideas with the world.
+                </p>
+                <ul class="social">
+                  <li><a href="#"><i class="lni lni-facebook-filled"></i></a></li>
+                  <li><a href="#"><i class="lni lni-twitter-original"></i></a></li>
+                  <li><a href="#"><i class="lni lni-instagram"></i></a></li>
+                  <li><a href="#"><i class="lni lni-linkedin-original"></i></a></li>
+                </ul>
+                <p class="copyright-text">
+                  © 2025 Snap Thoughts. Crafted with ❤️ for writers everywhere.
+                </p>
+              </div>
+              <!-- End Single Widget -->
+            </div>
+            <div class="col-lg-8 col-md-8 col-12">
+              <div class="row">
+                <div class="col-lg-4 col-md-6 col-12">
+                  <!-- Single Widget -->
+                  <div class="single-footer f-link">
+                    <h3>Explore</h3>
+                    <ul>
+                      <li><a href="#">Trending Posts</a></li>
+                      <li><a href="#">Categories</a></li>
+                      <li><a href="#">New Writers</a></li>
+                      <li><a href="#">Top Picks</a></li>
+                      <li><a href="#">Community</a></li>
+                    </ul>
+                  </div>
+                  <!-- End Single Widget -->
+                </div>
+                <div class="col-lg-4 col-md-6 col-12">
+                  <!-- Single Widget -->
+                  <div class="single-footer f-link">
+                    <h3>Support</h3>
+                    <ul>
+                      <li><a href="#">Help Center</a></li>
+                      <li><a href="#">Submit a Query</a></li>
+                      <li><a href="#">Writer Guidelines</a></li>
+                      <li><a href="#">Report a Problem</a></li>
+                    </ul>
+                  </div>
+                  <!-- End Single Widget -->
+                </div>
+                <div class="col-lg-4 col-md-6 col-12">
+                  <!-- Single Widget -->
+                  <div class="single-footer f-link">
+                    <h3>About</h3>
+                    <ul>
+                      <li><a href="#">Our Story</a></li>
+                      <li><a href="#">Blog Updates</a></li>
+                      <li><a href="#">Careers</a></li>
+                      <li><a href="#">Contact Us</a></li>
+                    </ul>
+                  </div>
+                  <!-- End Single Widget -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--/ End Footer Top -->
+    </footer>
+    <!--/ End Footer Area -->
+
+    <!-- ========================= scroll-top ========================= -->
+    <a href="#" class="scroll-top">
+      <i class="lni lni-chevron-up"></i>
+    </a>
+
+    <!-- ========================= JS here ========================= -->
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/wow.min.js' %}"></script>
+    <script src="{% static 'js/tiny-slider.js' %}"></script>
+    <script src="{% static 'js/glightbox.min.js' %}"></script>
+    <script src="{% static 'js/count-up.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
     <script>
-        // Initialize Bootstrap dropdowns
-        document.addEventListener('DOMContentLoaded', function() {
-            var dropdownElementList = [].slice.call(document.querySelectorAll('.dropdown-toggle'))
-            var dropdownList = dropdownElementList.map(function (dropdownToggleEl) {
-                return new bootstrap.Dropdown(dropdownToggleEl)
-            })
-        });
+      // Initialize Bootstrap dropdowns
+      document.addEventListener('DOMContentLoaded', function() {
+        var dropdownElementList = [].slice.call(document.querySelectorAll('.dropdown-toggle'))
+        var dropdownList = dropdownElementList.map(function (dropdownToggleEl) {
+          return new bootstrap.Dropdown(dropdownToggleEl)
+        })
+        
+        // Auto-hide messages after 5 seconds
+        const messages = document.querySelectorAll('.alert');
+        if (messages.length > 0) {
+          setTimeout(function() {
+            messages.forEach(function(message) {
+              const bsAlert = new bootstrap.Alert(message);
+              bsAlert.close();
+            });
+          }, 5000);
+        }
+      });
     </script>
-    {% block extra_scripts %}{% endblock %}
-</body>
+    {% block extra_js %}{% endblock %}
+  </body>
 </html>
