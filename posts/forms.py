@@ -1,11 +1,10 @@
-
 from django import forms
 from .models import Post, Comment
 
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['content']
+        fields = ['content', 'image']  
         widgets = {
             'content': forms.Textarea(attrs={'rows': 4, 'placeholder': 'What’s on your mind?', 'class': 'form-control'}),
         }
@@ -22,4 +21,4 @@ class CommentForm(forms.ModelForm):
         }
         labels = {
             'content': 'Comment',
-        }       
+        }

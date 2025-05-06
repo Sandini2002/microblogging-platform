@@ -1,15 +1,66 @@
 {% extends 'base2.html' %}
+{% load static %}
 
 {% block title %}Create New Post{% endblock %}
+
+{% block extra_styles %}
+<style>
+    body {
+        background-color: #ffe6f2; /* Light pink background */
+    }
+
+    .form-container {
+        background-color: #fff;
+        border: 2px solid #ff99cc; /* Pink border */
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        color: #ff66b2; /* Pink text */
+    }
+
+    input, textarea, select {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        border: 1px solid #ff99cc; /* Pink border */
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+
+    input:focus, textarea:focus, select:focus {
+        outline: none;
+        border-color: #ff66b2; /* Darker pink on focus */
+        box-shadow: 0 0 5px #ff66b2;
+    }
+
+    .submit-btn {
+        background-color: #ff66b2; /* Pink button */
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-top: 10px;
+    }
+
+    .submit-btn:hover {
+        background-color: #ff3385; /* Darker pink on hover */
+    }
+</style>
+{% endblock %}
 
 {% block content %}
 <div class="row justify-content-center">
     <div class="col-md-8">
         <!-- Card for the Form -->
-        <div class="card shadow-sm mb-4">
+        <div class="card shadow-sm mb-4 form-container">
             <div class="card-body">
                 <h2 class="card-title text-center mb-4">Create a New Post</h2>
-                <form method="POST" class="needs-validation" novalidate>
+                <form method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
                     {% csrf_token %}
                     
                     <!-- Post Content Field -->
@@ -21,9 +72,18 @@
                         </div>
                     </div>
 
+                    <!-- Image Field -->
+                    <div class="mb-3">
+                        <div for="{{ form.image.id_for_label }}" class="form-label text-center">Upload an image</div>
+                        {{ form.image }}
+                        <div class="invalid-feedback">
+                            Please upload a valid image.
+                        </div>
+                    </div>
+
                     <!-- Submit Button -->
                     <div class="d-grid">
-                        <button type="submit" class="btn btn-primary">Post</button>
+                        <button type="submit" class="btn btn-primary submit-btn">Post</button>
                     </div>
                 </form>
             </div>

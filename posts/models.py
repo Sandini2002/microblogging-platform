@@ -3,8 +3,9 @@ from django.contrib.auth.models import User
 
 class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    content = models.CharField(max_length=280)
+    content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    image = models.ImageField(upload_to='post_images/', blank=True, null=True)  # Ensure this is properly configured
 
     def __str__(self):
         return f"{self.author.username}: {self.content[:50]}"

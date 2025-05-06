@@ -1,0 +1,76 @@
+/* ...existing code... */
+
+:root {
+  --muted: 220, 14%, 96%;
+  --muted-foreground: 220, 10%, 40%;
+  --card: 0, 0%, 100%;
+  --card-foreground: 220, 10%, 20%;
+}
+
+/* Utility classes */
+.bg-card {
+  background-color: hsl(var(--card));
+}
+
+.text-muted-foreground {
+  color: hsl(var(--muted-foreground));
+}
+
+/* Navbar Styles */
+.navbar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem;
+  background-color: hsl(var(--card));
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar a {
+  font-size: 1rem;
+  font-weight: bold;
+  color: hsl(var(--card-foreground));
+  text-decoration: none;
+  margin-left: 1rem;
+  transition: color 0.3s ease;
+}
+
+.navbar a:hover {
+  color: hsl(var(--muted-foreground));
+}
+
+/* User Profile Styles */
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: hsl(var(--card));
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.user-profile-avatar {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid hsl(var(--muted-foreground));
+}
+
+.user-profile-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-profile-username {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: hsl(var(--card-foreground));
+}
+
+.user-profile-bio {
+  font-size: 0.875rem;
+  color: hsl(var(--muted-foreground));
+}
+
+/* ...existing code... */
