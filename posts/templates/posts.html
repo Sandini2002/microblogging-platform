@@ -42,6 +42,9 @@
                     </div>
                 </div>
                 <p class="mt-2">{{ post.content }}</p>
+                {% if post.image %}
+                <img src="{{ post.image.url }}" alt="Post Image" style="max-width: 100%; height: auto;">
+                {% endif %}
 
                 <!-- Comment Section -->
                 <div class="mt-3">

@@ -2,13 +2,12 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from . import views
+from .views import posts  
 
 urlpatterns = [
     # Existing URLs
-    path('', views.home, name='home'),
-    path('login/', views.user_login, name='login'),  
-    path('register/', views.user_register, name='register'),
-    path('logout/', views.user_logout, name='logout'),
+    path('', posts, name='home'),
+
     
     # Profile URLs
     path('my_profile/', views.my_profile, name='my_profile'),  # Current user's profile

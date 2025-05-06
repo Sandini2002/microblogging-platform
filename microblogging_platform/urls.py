@@ -17,9 +17,12 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('', include('accounts.urls')),  # Accounts app URLs
     path('', include('posts.urls')),        # Posts app URLs
-]
+    path('my_profile/', include('my_profile.urls')),    # Profile app URLs
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
