@@ -13,7 +13,7 @@ def posts(request):
 @login_required
 def create_post(request):
     if request.method == 'POST':
-        form = PostForm(request.POST)
+        form = PostForm(request.POST, request.FILES)  # Handle file uploads
         if form.is_valid():
             post = form.save(commit=False)  # Don't save yet
             post.author = request.user  # Set the author to the logged-in user

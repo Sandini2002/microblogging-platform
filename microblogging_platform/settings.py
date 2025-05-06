@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     # Your custom apps
     'accounts',
     'posts',
+    'my_profile',
     'django_bootstrap5',
 ]
 
@@ -123,6 +124,10 @@ STATIC_URL = "static/"
 STATICFILES_DIRS = [
     BASE_DIR / 'microblogging_platform' / 'static',  # 👈 tells Django to look here
 ]
+
+# Media files
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
