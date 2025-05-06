@@ -36,7 +36,7 @@
         <form action="{% url 'add_reply' comment_id=comment.id %}" method="POST">
             {% csrf_token %}
             <textarea name="comment_content" rows="2" class="form-control" placeholder="Reply to this comment..."></textarea>
-            <button type="submit" class="btn btn-sm btn-primary mt-2">Reply</button>
+            <button type="submit"style="background-color: #ff1493; color: #fff;" class="btn btn-sm mt-2">Reply</button>
         </form>
     </div>
 

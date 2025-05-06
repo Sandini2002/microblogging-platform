@@ -1681,11 +1681,11 @@ ol {
 }
 
 .sticky .navbar .navbar-nav .nav-item a.active {
-  color: #ff6b81;
+  color: #000000;
 }
 
 .sticky .navbar .navbar-nav .nav-item a {
-  color: #081828;
+  color: #ff6b81;
 }
 
 .header .navbar .navbar-nav .nav-item .sub-menu a.active {

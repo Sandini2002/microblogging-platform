@@ -3,13 +3,13 @@
 {% block title %}Update Post{% endblock %}
 
 {% block content %}
-<div class="row">
+<div class="row" style="margin-top: 150px;">
     <div class="col-md-8 offset-md-2">
         <h2 class="text-center mb-4">Update Your Post</h2>
         <form method="POST" class="form-group">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit" class="btn btn-primary">Update</button>
+            <button type="submit"style="background-color: #ff1493; color: #fff;" class="btn">Update</button>
         </form>
     </div>
 </div>

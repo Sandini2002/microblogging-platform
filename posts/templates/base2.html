@@ -20,6 +20,9 @@
     <link rel="stylesheet" href="{% static 'css/tiny-slider.css' %}" />
     <link rel="stylesheet" href="{% static 'css/glightbox.min.css' %}" />
     <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.12.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <!-- Pink Theme CSS -->
     <style>
       :root {
@@ -92,88 +95,74 @@
     </div>
     <!-- /End Preloader -->
 
-    <!-- Start Header Area -->
-    <header class="header navbar-area">
-      <div class="container">
-        <div class="row align-items-center">
-          <div class="col-lg-12">
-            <div class="nav-inner">
-              <!-- Start Navbar -->
-              <nav class="navbar navbar-expand-lg">
-                <a class="navbar-brand" href="{% url 'home' %}">
-                  <img src="{% static 'images/logo/logo.png' %}" alt="Logo" />
-                </a>
-                <button
-                  class="navbar-toggler mobile-menu-btn"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#navbarSupportedContent"
-                  aria-controls="navbarSupportedContent"
-                  aria-expanded="false"
-                  aria-label="Toggle navigation"
-                >
-                  <span class="toggler-icon"></span>
-                  <span class="toggler-icon"></span>
-                  <span class="toggler-icon"></span>
-                </button>
-                <div
-                  class="collapse navbar-collapse sub-menu-bar"
-                  id="navbarSupportedContent"
-                >
-                  <ul id="nav" class="navbar-nav ms-auto">
-                    <!-- Feed Link -->
-                    <li class="nav-item">
-                      <a href="{% url 'posts' %}" class="{% if 'posts' in request.path and not 'create' in request.path %}active{% endif %}" aria-label="Toggle navigation">
-                        <i class="lni lni-home"></i> Feed
-                      </a>
-                    </li>
-                    
-                    <!-- Create Post Link -->
-                    <li class="nav-item">
-                      <a href="{% url 'create_post' %}" class="{% if 'create_post' in request.path %}active{% endif %}" aria-label="Toggle navigation">
-                        <i class="lni lni-pencil"></i> New Post
-                      </a>
-                    </li>
-                    
-                    <!-- Explore Link -->
-                    <li class="nav-item">
-                      <a href="{% url 'posts' %}" aria-label="Toggle navigation">
-                        <i class="lni lni-compass"></i> Explore
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-                
-                <!-- User Profile Dropdown -->
-                <div class="user-menu dropdown">
-                  <a class="dropdown-toggle" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    <div class="profile-avatar">
-                      {{ request.user.username|first|upper }}
-                    </div>
-                  </a>
-                  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                    <li><a class="dropdown-item" href="{% url 'profile' request.user.username %}">
-                      <i class="lni lni-user"></i> Profile
-                    </a></li>
-                    <li><a class="dropdown-item" href="{% url 'my_profile' %}">
-                      <i class="lni lni-cog"></i> Settings
-                    </a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="{% url 'logout' %}">
-                      <i class="lni lni-exit"></i> Logout
-                    </a></li>
-                  </ul>
-                </div>
-              </nav>
-              <!-- End Navbar -->
+<!-- Start Header Area -->
+<header class="header navbar-area" style="background-color: #ff6b81;">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-12">
+        <div class="nav-inner">
+          <!-- Start Navbar -->
+          <nav class="navbar navbar-expand-lg">
+            <a class="navbar-brand" href="{% url 'home' %}">
+              <img src="{% static 'images/logo/logo.png' %}" class="img-fluid" alt="Logo" style="height: 40px;" />
+            </a>
+            <button
+              class="navbar-toggler mobile-menu-btn"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span class="toggler-icon"></span>
+              <span class="toggler-icon"></span>
+              <span class="toggler-icon"></span>
+            </button>
+
+            <div
+              class="collapse navbar-collapse justify-content-between"
+              id="navbarSupportedContent"
+            >
+              <ul class="navbar-nav mb-2 mb-lg-0">
+                <li class="nav-item">
+                  <a
+                    class="nav-link {% if request.resolver_match.url_name == 'posts' %}active{% endif %}"
+                    href="{% url 'posts' %}"
+                    style="color: white;"
+                    >Posts</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link {% if request.resolver_match.url_name == 'create_post' %}active{% endif %}"
+                    href="{% url 'create_post' %}"
+                    style="color: white;"
+                    >New Post</a
+                  >
+                </li>
+              </ul>
+
+              <!-- Profile Link on the Right -->
+              <ul class="navbar-nav mb-2 mb-lg-0" style="margin-right: 0.5rem !important;">
+                <li class="nav-item"  >
+                  <a
+                    class="nav-link {% if request.resolver_match.url_name == 'my_profile' %}active{% endif %}"
+                    href="{% url 'my_profile' %}"
+                    style="color: white;"
+                    >Profile</a
+                  >
+                </li>
+              </ul>
             </div>
-          </div>
+          </nav>
+          <!-- End Navbar -->
         </div>
-        <!-- row -->
       </div>
-      <!-- container -->
-    </header>
-    <!-- End Header Area -->
+    </div>
+  </div>
+</header>
+<!-- End Header Area -->
 
     <!-- Main Content Area -->
     <main class="main-content">
