@@ -3,14 +3,48 @@
 {% block title %}Edit Comment{% endblock %}
 
 {% block content %}
+<style>
+    .edit-comment-container {
+        background-color: #fff;
+        border: 1px solid #ffccd5;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(255, 105, 180, 0.1);
+    }
+    
+    h2 {
+        color: #ff69b4;
+        margin-bottom: 20px;
+    }
+    
+    .btn-pink {
+        background-color: #ff69b4;
+        color: white;
+        border: none;
+    }
+    
+    .btn-pink:hover {
+        background-color: #ff1493;
+        color: white;
+    }
+</style>
+
 <div class="row">
     <div class="col-md-8 offset-md-2">
-        <h2 class="text-center mb-4">Edit Your Comment</h2>
-        <form method="POST" class="form-group">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-primary">Save Changes</button>
-        </form>
+        <div class="edit-comment-container">
+            <h2 class="text-center">Edit Your Comment</h2>
+            <form method="POST" class="form-group">
+                {% csrf_token %}
+                <div class="mb-3">
+                    {{ form.content.label_tag }}
+                    {{ form.content }}
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-pink">Save Changes</button>
+                    <a href="{% url 'posts' %}" class="btn btn-outline-secondary ms-2">Cancel</a>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 {% endblock %}

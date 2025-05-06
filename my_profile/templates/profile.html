@@ -1,161 +1,321 @@
 {% extends 'base2.html' %}
+{% load static %}
 
-{% block title %}{{ profile_user.username }}'s Profile{% endblock %}
+{% block title %}{{ profile_user.username }}'s Profile | Snap Thoughts{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-    <div class="row">
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body text-center">
-                    <div class="mb-3">
-                        <!-- Profile picture placeholder -->
-                        <div style="width: 100px; height: 100px; background-color: #ff69b4; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; margin: 0 auto;">
-                            {{ profile_user.username|first|upper }}
-                        </div>
-                    </div>
-                    <h4 class="card-title">{{ profile_user.username }}</h4>
-                    <p class="text-muted">Joined: {{ profile_user.date_joined|date:"F Y" }}</p>
-                </div>
+<style>
+    body {
+        background-color: #fff5f8;
+    }
+    
+    .profile-header {
+        background-color: #fff;
+        border: 1px solid #ffccd5;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 8px rgba(255, 105, 180, 0.1);
+    }
+    
+    .profile-avatar {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background-color: #ff69b4;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 40px;
+        margin: 0 auto 15px;
+    }
+    
+    .profile-stats {
+        background-color: #fff;
+        border: 1px solid #ffccd5;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 8px rgba(255, 105, 180, 0.1);
+    }
+    
+    .nav-tabs .nav-link {
+        color: #ff69b4;
+    }
+    
+    .nav-tabs .nav-link.active {
+        color: #ff1493;
+        border-color: #ffccd5 #ffccd5 #fff;
+    }
+    
+    .post-card {
+        background-color: #fff;
+        border: 1px solid #ffccd5;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 8px rgba(255, 105, 180, 0.1);
+    }
+    
+    .post-header {
+        background-color: #fff0f5;
+        padding: 15px;
+        border-bottom: 1px solid #ffccd5;
+        border-radius: 10px 10px 0 0;
+    }
+    
+    .post-content {
+        padding: 15px;
+    }
+    
+    .post-image {
+        max-width: 100%;
+        border-radius: 8px;
+        margin-top: 10px;
+    }
+    
+    .post-actions {
+        padding: 10px 15px;
+        border-top: 1px solid #ffccd5;
+        background-color: #fff0f5;
+        border-radius: 0 0 10px 10px;
+    }
+    
+    .btn-pink {
+        background-color: #ff69b4;
+        color: white;
+        border: none;
+    }
+    
+    .btn-pink:hover {
+        background-color: #ff1493;
+        color: white;
+    }
+    
+    .btn-outline-pink {
+        color: #ff69b4;
+        border-color: #ff69b4;
+    }
+    
+    .btn-outline-pink:hover {
+        background-color: #ff69b4;
+        color: white;
+    }
+    
+    .text-pink {
+        color: #ff69b4;
+    }
+</style>
+
+<div class="row">
+    <!-- Profile Info Column -->
+    <div class="col-md-4">
+        <div class="profile-header text-center">
+            <div class="profile-avatar">
+                {{ profile_user.username|first|upper }}
             </div>
+            <h3>{{ profile_user.username }}</h3>
+            <p class="text-muted">Joined: {{ profile_user.date_joined|date:"F Y" }}</p>
             
-            <div class="card mt-3">
-                <div class="card-body">
-                    <h5 class="card-title">Stats</h5>
-                    <div class="row text-center">
-                        <div class="col-4">
-                            <h6>{{ user_posts.count }}</h6>
-                            <small class="text-muted">Posts</small>
-                        </div>
-                        <div class="col-4">
-                            <h6>{{ user_comments.count }}</h6>
-                            <small class="text-muted">Comments</small>
-                        </div>
-                        <div class="col-4">
-                            <h6>{{ liked_posts.count }}</h6>
-                            <small class="text-muted">Likes</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {% if request.user != profile_user %}
+            <!-- Follow button would go here if you implement that feature -->
+            <button class="btn btn-pink">Follow</button>
+            {% endif %}
         </div>
         
-        <div class="col-md-8">
-            <ul class="nav nav-tabs" id="profileTabs" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="posts-tab" data-bs-toggle="tab" data-bs-target="#posts" type="button" role="tab" aria-controls="posts" aria-selected="true">Posts</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="comments-tab" data-bs-toggle="tab" data-bs-target="#comments" type="button" role="tab" aria-controls="comments" aria-selected="false">Comments</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="likes-tab" data-bs-toggle="tab" data-bs-target="#likes" type="button" role="tab" aria-controls="likes" aria-selected="false">Likes</button>
-                </li>
-            </ul>
-            
-            <div class="tab-content" id="profileTabsContent">
-                <!-- Posts Tab -->
-                <div class="tab-pane fade show active" id="posts" role="tabpanel" aria-labelledby="posts-tab">
-                    {% if user_posts %}
-                        {% for post in user_posts %}
-                            <div class="card mt-3">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <div class="d-flex align-items-center">
-                                            <div style="width: 40px; height: 40px; background-color: #ff69b4; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 10px;">
-                                                {{ post.author.username|first|upper }}
-                                            </div>
-                                            <div>
-                                                <h6 class="mb-0">{{ post.author.username }}</h6>
-                                                <small class="text-muted">{{ post.created_at|date:"M d, Y" }}</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <p class="card-text">{{ post.content }}</p>
-                                    <div class="d-flex justify-content-between">
-                                        <div>
-                                            <span class="me-3"><i class="fas fa-heart"></i> {{ post.likes.count }}</span>
-                                            <span><i class="fas fa-comment"></i> {{ post.comments.count }}</span>
-                                        </div>
-                                        {% if user == post.author %}
-                                            <div>
-                                                <a href="{% url 'update_post' post.id %}" class="btn btn-sm btn-outline-primary">Edit</a>
-                                                <form method="post" action="{% url 'delete_post' post.id %}" class="d-inline">
-                                                    {% csrf_token %}
-                                                    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure you want to delete this post?')">Delete</button>
-                                                </form>
-                                            </div>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    {% else %}
-                        <div class="alert alert-info mt-3">No posts yet.</div>
-                    {% endif %}
+        <div class="profile-stats">
+            <div class="row text-center">
+                <div class="col-4">
+                    <h4>{{ user_posts.count }}</h4>
+                    <small class="text-muted">Posts</small>
                 </div>
-                
-                <!-- Comments Tab -->
-                <div class="tab-pane fade" id="comments" role="tabpanel" aria-labelledby="comments-tab">
-                    {% if user_comments %}
-                        {% for comment in user_comments %}
-                            <div class="card mt-3">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <div>
-                                            <small class="text-muted">Commented on a post by {{ comment.post.author.username }}</small>
-                                        </div>
-                                        <small class="text-muted">{{ comment.created_at|date:"M d, Y" }}</small>
-                                    </div>
-                                    <p class="card-text">{{ comment.content }}</p>
-                                    {% if user == comment.author %}
-                                        <div class="text-end">
-                                            <a href="{% url 'edit_comment' comment.id %}" class="btn btn-sm btn-outline-primary">Edit</a>
-                                            <form method="post" action="{% url 'delete_comment' comment.id %}" class="d-inline">
-                                                {% csrf_token %}
-                                                <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure you want to delete this comment?')">Delete</button>
-                                            </form>
-                                        </div>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        {% endfor %}
-                    {% else %}
-                        <div class="alert alert-info mt-3">No comments yet.</div>
-                    {% endif %}
+                <div class="col-4">
+                    <h4>{{ user_comments.count }}</h4>
+                    <small class="text-muted">Comments</small>
                 </div>
-                
-                <!-- Likes Tab -->
-                <div class="tab-pane fade" id="likes" role="tabpanel" aria-labelledby="likes-tab">
-                    {% if liked_posts %}
-                        {% for post in liked_posts %}
-                            <div class="card mt-3">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <div class="d-flex align-items-center">
-                                            <div style="width: 40px; height: 40px; background-color: #ff69b4; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 10px;">
-                                                {{ post.author.username|first|upper }}
-                                            </div>
-                                            <div>
-                                                <h6 class="mb-0">{{ post.author.username }}</h6>
-                                                <small class="text-muted">{{ post.created_at|date:"M d, Y" }}</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <p class="card-text">{{ post.content }}</p>
-                                    <div>
-                                        <span class="me-3"><i class="fas fa-heart text-danger"></i> {{ post.likes.count }}</span>
-                                        <span><i class="fas fa-comment"></i> {{ post.comments.count }}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    {% else %}
-                        <div class="alert alert-info mt-3">No liked posts yet.</div>
-                    {% endif %}
+                <div class="col-4">
+                    <h4>{{ liked_posts.count }}</h4>
+                    <small class="text-muted">Likes</small>
                 </div>
             </div>
         </div>
     </div>
+    
+    <!-- User Content Column -->
+    <div class="col-md-8">
+        <ul class="nav nav-tabs mb-4" id="profileTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="posts-tab" data-bs-toggle="tab" data-bs-target="#posts" type="button" role="tab" aria-controls="posts" aria-selected="true">Posts</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="comments-tab" data-bs-toggle="tab" data-bs-target="#comments" type="button" role="tab" aria-controls="comments" aria-selected="false">Comments</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="likes-tab" data-bs-toggle="tab" data-bs-target="#likes" type="button" role="tab" aria-controls="likes" aria-selected="false">Likes</button>
+            </li>
+        </ul>
+        
+        <div class="tab-content" id="profileTabsContent">
+            <!-- Posts Tab -->
+            <div class="tab-pane fade show active" id="posts" role="tabpanel" aria-labelledby="posts-tab">
+                {% if user_posts %}
+                    {% for post in user_posts %}
+                    <div class="post-card">
+                        <div class="post-header">
+                            <div class="d-flex align-items-center">
+                                <div class="profile-avatar" style="width: 40px; height: 40px; font-size: 16px;">
+                                    {{ post.author.username|first|upper }}
+                                </div>
+                                <div class="ms-3">
+                                    <h5 class="mb-0">{{ post.author.username }}</h5>
+                                    <small class="text-muted">{{ post.created_at|date:"F d, Y" }}</small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="post-content">
+                            <p>{{ post.content }}</p>
+                            {% if post.image %}
+                            <img src="{{ post.image.url }}" alt="Post image" class="post-image">
+                            {% endif %}
+                        </div>
+                        
+                        <div class="post-actions">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <form method="post" action="{% url 'like_post' post.id %}" class="d-inline">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-sm {% if request.user in post.likes.all %}btn-pink{% else %}btn-outline-pink{% endif %}">
+                                            <i class="fas fa-heart"></i> 
+                                            {% if post.likes.count > 0 %}{{ post.likes.count }}{% endif %}
+                                        </button>
+                                    </form>
+                                    <button class="btn btn-sm btn-outline-pink ms-2">
+                                        <i class="fas fa-comment"></i> 
+                                        {% if post.comments.count > 0 %}{{ post.comments.count }}{% endif %}
+                                    </button>
+                                </div>
+                                
+                                {% if request.user == post.author %}
+                                <div>
+                                    <a href="{% url 'update_post' post.id %}" class="btn btn-sm btn-outline-secondary">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </a>
+                                    <form method="post" action="{% url 'delete_post' post.id %}" class="d-inline">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure you want to delete this post?')">
+                                            <i class="fas fa-trash"></i> Delete
+                                        </button>
+                                    </form>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="alert alert-info">
+                        No posts yet.
+                        {% if request.user == profile_user %}
+                            <a href="{% url 'create_post' %}" class="alert-link">Create your first post!</a>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+            
+            <!-- Comments Tab -->
+            <div class="tab-pane fade" id="comments" role="tabpanel" aria-labelledby="comments-tab">
+                {% if user_comments %}
+                    {% for comment in user_comments %}
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <small class="text-muted">Commented on a post by {{ comment.post.author.username }}</small>
+                                <small class="text-muted">{{ comment.created_at|date:"F d, Y" }}</small>
+                            </div>
+                            <p class="card-text">{{ comment.content }}</p>
+                            {% if request.user == comment.author %}
+                            <div class="text-end">
+                                <a href="{% url 'edit_comment' comment.id %}" class="btn btn-sm btn-outline-secondary">
+                                    <i class="fas fa-edit"></i> Edit
+                                </a>
+                                <form method="post" action="{% url 'delete_comment' comment.id %}" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure you want to delete this comment?')">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </button>
+                                </form>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="alert alert-info">No comments yet.</div>
+                {% endif %}
+            </div>
+            
+            <!-- Likes Tab -->
+            <div class="tab-pane fade" id="likes" role="tabpanel" aria-labelledby="likes-tab">
+                {% if liked_posts %}
+                    {% for post in liked_posts %}
+                    <div class="post-card">
+                        <div class="post-header">
+                            <div class="d-flex align-items-center">
+                                <div class="profile-avatar" style="width: 40px; height: 40px; font-size: 16px;">
+                                    {{ post.author.username|first|upper }}
+                                </div>
+                                <div class="ms-3">
+                                    <h5 class="mb-0">{{ post.author.username }}</h5>
+                                    <small class="text-muted">{{ post.created_at|date:"F d, Y" }}</small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="post-content">
+                            <p>{{ post.content }}</p>
+                            {% if post.image %}
+                            <img src="{{ post.image.url }}" alt="Post image" class="post-image">
+                            {% endif %}
+                        </div>
+                        
+                        <div class="post-actions">
+                            <div>
+                                <form method="post" action="{% url 'like_post' post.id %}" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-pink">
+                                        <i class="fas fa-heart"></i> 
+                                        {% if post.likes.count > 0 %}{{ post.likes.count }}{% endif %}
+                                    </button>
+                                </form>
+                                <button class="btn btn-sm btn-outline-pink ms-2">
+                                    <i class="fas fa-comment"></i> 
+                                    {% if post.comments.count > 0 %}{{ post.comments.count }}{% endif %}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="alert alert-info">No liked posts yet.</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 </div>
+
+<script>
+    // Initialize Bootstrap tabs
+    document.addEventListener('DOMContentLoaded', function() {
+        var triggerTabList = [].slice.call(document.querySelectorAll('#profileTabs button'))
+        triggerTabList.forEach(function (triggerEl) {
+            var tabTrigger = new bootstrap.Tab(triggerEl)
+            
+            triggerEl.addEventListener('click', function (event) {
+                event.preventDefault()
+                tabTrigger.show()
+            })
+        })
+    });
+</script>
 {% endblock %}

@@ -1,54 +1,27 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.db import models
 from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required
-from django.http import Http404
-from posts.models import Post, Comment, Like
-from posts.forms import PostForm  # Correct the import to reference the 'posts' app
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
-def home(request):
-    """View for the home page"""
-    return render(request, 'base2.html')
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    bio = models.TextField(max_length=500, blank=True)
+    location = models.CharField(max_length=100, blank=True)
+    website = models.URLField(max_length=200, blank=True)
+    avatar = models.ImageField(upload_to='profile_pics', blank=True, null=True)
+    followers = models.ManyToManyField(User, related_name='following', blank=True)
+    
+    def __str__(self):
+        return f'{self.user.username} Profile'
 
-def posts(request):
-    return render(request, 'base2.html')
+# Create a Profile for each new User
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
 
-@login_required
-def my_profile(request):
-    """View for the current user's profile"""
-    return redirect('my_profile', username=request.user.username)
+# Save the Profile when the User is saved
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()
 
-@login_required
-def profile_view(request, username=None):
-    """View for any user's profile"""
-    if not username:
-        raise Http404("No User matches the given query.")
-    
-    profile_user = get_object_or_404(User, username=username)
-    
-    # Get user posts
-    user_posts = Post.objects.filter(author=profile_user).order_by('-created_at')
-    
-    # Get posts liked by the user (if your Like model has a user field)
-    liked_posts = Post.objects.filter(likes__user=profile_user).distinct().order_by('-created_at')
-    
-    # Get user comments
-    user_comments = Comment.objects.filter(author=profile_user).order_by('-created_at')
-    
-    context = {
-        'profile_user': profile_user,
-        'user_posts': user_posts,
-        'liked_posts': liked_posts,
-        'user_comments': user_comments,
-    }
-    
-    return render(request, 'profile.html', context)
-
-def create_post(request):
-    if request.method == 'POST':
-        form = PostForm(request.POST, request.FILES)  # Include request.FILES for file uploads
-        if form.is_valid():
-            form.save()
-            return redirect('posts')  # Redirect to the posts page
-    else:
-        form = PostForm()
-    return render(request, 'create_post.html', {'form': form})

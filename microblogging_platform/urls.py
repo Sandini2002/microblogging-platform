@@ -19,10 +19,18 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from posts import views as post_views
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
-    path('', include('accounts.urls')),  # Accounts app URLs
-    path('', include('posts.urls')),        # Posts app URLs
-    path('my_profile/', include('my_profile.urls')),    # Profile app URLs
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path('admin/', admin.site.urls),
+    path('', post_views.posts, name='home'),  # Redirect home to posts
+    path('', post_views.posts, name='posts'),
+    path('profile/<str:username>/', post_views.profile_view, name='profile'),
+    path('my_profile/', post_views.my_profile, name='my_profile'),
+    path('logout/', post_views.logout_view, name='logout'),  # Add this view
+    path('', include('posts.urls')),
+]
+
+# Serve media files in development
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
